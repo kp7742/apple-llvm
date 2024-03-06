@@ -752,6 +752,10 @@ public:
     return(N);
   }
 
+#ifdef CS
+#undef CS
+#endif
+
   iterator erase(const_iterator CS, const_iterator CE) {
     // Just cast away constness because this is a non-const member function.
     iterator S = const_cast<iterator>(CS);

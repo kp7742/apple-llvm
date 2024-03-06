@@ -819,8 +819,8 @@ else ()
 
       # Needed for clear_cache on debug mode, due to r7's usage in inline asm.
       # Release mode already sets it via -O2/3, Debug mode doesn't.
-      if (${arch} STREQUAL "armhf")
-        list(APPEND BUILTIN_CFLAGS_${arch} -fomit-frame-pointer -DCOMPILER_RT_ARMHF_TARGET)
+      if (${arch} STREQUAL "arm")
+        list(APPEND BUILTIN_CFLAGS_${arch} -fomit-frame-pointer# -DCOMPILER_RT_ARMHF_TARGET)
       endif()
 
       # For RISCV32, we must force enable int128 for compiling long

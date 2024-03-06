@@ -1534,7 +1534,7 @@ template <class ELFT> void elf::scanRelocations() {
   // for -z nocombreloc. MIPS and PPC64 use global states which are not suitable
   // for parallelism.
   bool serial = !config->zCombreloc || config->emachine == EM_MIPS ||
-                config->emachine == EM_PPC64;
+                config->emachine == EM_PPC64 || config->emachine == EM_AARCH64;
   parallel::TaskGroup tg;
   for (ELFFileBase *f : ctx.objectFiles) {
     auto fn = [f]() {

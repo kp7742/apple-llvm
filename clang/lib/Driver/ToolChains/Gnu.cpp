@@ -167,14 +167,11 @@ void tools::gcc::Common::ConstructJob(Compilation &C, const JobAction &JA,
     }
   }
 
-  const std::string &customGCCName = D.getCCCGenericGCCName();
-  const char *GCCName;
-  if (!customGCCName.empty())
-    GCCName = customGCCName.c_str();
-  else if (D.CCCIsCXX()) {
-    GCCName = "g++";
-  } else
-    GCCName = "gcc";
+  // Termux modification: Disable calling into gcc from clang.
+  // Clang calls into gcc if it tries to compile a language it doesn't understand.
+  // On Termux gcc is a symlink to clang, so this leads into fork loop until
+  // the whole system runs out of memory.
+  const char *GCCName = "false";
 
   const char *Exec = Args.MakeArgString(getToolChain().GetProgramPath(GCCName));
   C.addCommand(std::make_unique<Command>(JA, *this,
@@ -566,7 +563,6 @@ void tools::gnutools::Linker::ConstructJob(Compilation &C, const JobAction &JA,
       if (OnlyLibstdcxxStatic)
         CmdArgs.push_back("-Bdynamic");
     }
-    CmdArgs.push_back("-lm");
   }
 
   // Silence warnings when linking C code with a C++ '-stdlib' argument.
@@ -610,6 +606,9 @@ void tools::gnutools::Linker::ConstructJob(Compilation &C, const JobAction &JA,
         WantPthread = true;
 
       AddRunTimeLibs(ToolChain, D, CmdArgs, Args);
+
+      if (D.CCCIsCXX())
+        CmdArgs.push_back("-lm");
 
       // LLVM support for atomics on 32-bit SPARC V8+ is incomplete, so
       // forcibly link with libatomic as a workaround.
