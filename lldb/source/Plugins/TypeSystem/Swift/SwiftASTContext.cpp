@@ -1936,6 +1936,9 @@ SwiftASTContext::CreateInstance(lldb::LanguageType language, Module &module,
   swift_ast_sp->GetLanguageOptions().EnableCXXInterop =
       module.IsSwiftCxxInteropEnabled();
 
+  if (module.IsEmbeddedSwift())
+    swift_ast_sp->GetLanguageOptions().enableFeature(swift::Feature::Embedded);
+
   bool found_swift_modules = false;
   SymbolFile *sym_file = module.GetSymbolFile();
 
@@ -2357,6 +2360,10 @@ lldb::TypeSystemSP SwiftASTContext::CreateInstance(
 
   swift_ast_sp->GetLanguageOptions().EnableCXXInterop =
       target.IsSwiftCxxInteropEnabled();
+
+  if (target.IsEmbeddedSwift())
+    swift_ast_sp->GetLanguageOptions().enableFeature(swift::Feature::Embedded);
+
   bool handled_sdk_path = false;
   const size_t num_images = target.GetImages().GetSize();
 
@@ -2651,6 +2658,10 @@ lldb::TypeSystemSP SwiftASTContext::CreateInstance(
 
   swift_ast_sp->GetLanguageOptions().EnableCXXInterop =
       target.IsSwiftCxxInteropEnabled();
+
+  if (target.IsEmbeddedSwift())
+    swift_ast_sp->GetLanguageOptions().enableFeature(swift::Feature::Embedded);
+
   bool handled_sdk_path = false;
   const size_t num_images = target.GetImages().GetSize();
 
