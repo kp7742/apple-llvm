@@ -49,6 +49,10 @@ elseif(APPLE)
                LINK_FLAGS ${INDEXSTORE_LINK_FLAGS})
 endif()
 
+# FIX: A workaround version script error on Termux.
+set_property(TARGET IndexStore APPEND_STRING PROPERTY
+               LINK_FLAGS " -Wl,--undefined-version")
+
 if (LLVM_INSTALL_TOOLCHAIN_ONLY)
   install(TARGETS IndexStore
     COMPONENT IndexStore

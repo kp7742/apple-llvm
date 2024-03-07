@@ -29,7 +29,7 @@ if (NOT Python3_EXECUTABLE
     OR APPLE
     OR CMAKE_CROSSCOMPILING
     OR GENERATOR_IS_MULTI_CONFIG
-    OR NOT LLVM_NATIVE_ARCH IN_LIST LLVM_TARGETS_TO_BUILD
+    OR LLVM_NATIVE_ARCH IN_LIST LLVM_TARGETS_TO_BUILD # Small change to Disable AST introspection in Termux 
     )
     configure_file(
       EmptyNodeIntrospection.inc.in
